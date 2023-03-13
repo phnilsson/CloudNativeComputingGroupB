@@ -1,11 +1,37 @@
 package main
 
 import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 	"systementor.se/yagolangapi/data"
 )
 
+type PageView struct {
+	Title  string
+	Rubrik string
+}
+
+func start(c *gin.Context) {
+	c.HTML(http.StatusOK, "home.html", &PageView{Title: "test", Rubrik: "rwef"})
+}
+
+// HTML
+// JSON
+
+func employeesJson(c *gin.Context) {
+	var employees []data.Employee
+	data.DB.Find(&employees)
+	c.JSON(http.StatusOK, employees)
+}
+
 func main() {
 	data.InitDatabase()
+	router := gin.Default()
+	router.LoadHTMLGlob("templates/**")
+	router.GET("/", start)
+	router.GET("/api/employees", employeesJson)
+	router.Run("localhost:8080")
 
 	// e := data.Employee{
 	// 	Age:  1,
