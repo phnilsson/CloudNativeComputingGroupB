@@ -13,7 +13,7 @@ type PageView struct {
 }
 
 func start(c *gin.Context) {
-	c.HTML(http.StatusOK, "home.html", &PageView{Title: "test", Rubrik: "rwef"})
+	c.HTML(http.StatusOK, "home.html", &PageView{Title: "test", Rubrik: "Hej Golang"})
 }
 
 // HTML
