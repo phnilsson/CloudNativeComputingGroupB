@@ -31,7 +31,7 @@ func main() {
 	router.LoadHTMLGlob("templates/**")
 	router.GET("/", start)
 	router.GET("/api/employees", employeesJson)
-	router.Run("localhost:8080")
+	router.Run(":8080")
 
 	// e := data.Employee{
 	// 	Age:  1,
