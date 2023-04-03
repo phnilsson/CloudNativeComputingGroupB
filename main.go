@@ -38,6 +38,14 @@ func addEmployee(c *gin.Context) {
 
 }
 
+func addManyEmployees(c *gin.Context) {
+	//Here we create 10 Employees
+	for i := 0; i < 10; i++ {
+		data.DB.Create(&data.Employee{Age: theRandom.Intn(50) + 18, Namn: randomdata.FirstName(randomdata.RandomGender), City: randomdata.City()})
+	}
+
+}
+
 func main() {
 	theRandom = rand.New(rand.NewSource(time.Now().UnixNano()))
 	data.InitDatabase()
@@ -46,6 +54,7 @@ func main() {
 	router.GET("/", start)
 	router.GET("/api/employees", employeesJson)
 	router.GET("/api/addemployee", addEmployee)
+	router.GET("/api/addmanyemployees", addManyEmployees)
 	router.Run(":8080")
 
 	// e := data.Employee{
