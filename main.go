@@ -39,6 +39,7 @@ func addEmployee(c *gin.Context) {
 }
 
 func addManyEmployees(c *gin.Context) {
+	//Here we create 10 Employees
 	for i := 0; i < 10; i++ {
 		data.DB.Create(&data.Employee{Age: theRandom.Intn(50) + 18, Namn: randomdata.FirstName(randomdata.RandomGender), City: randomdata.City()})
 	}
