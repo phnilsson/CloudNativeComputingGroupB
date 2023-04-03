@@ -13,7 +13,6 @@ func InitDatabase() {
 	//dsn := "root:my-secret-pw@tcp(127.0.0.1:3307)/emp?charset=utf8mb4&parseTime=True&loc=Local"
 	//DB, _ = gorm.Open(mysql.Open(dsn, &gorm.Config{}))
 	//
-	//os.MkdirAll("database", 0700)
 	s := os.Getenv("RUNENVIRONMENT")
 	var filePath = ""
 	if s == "Production" {
@@ -22,7 +21,7 @@ func InitDatabase() {
 		filePath = "database/gorm.sqlite"
 	}
 
-	filePath = "database/gorm.sqlite"
+	//	os.MkdirAll("database", 0700)
 	DB, _ = gorm.Open(sqlite.Open(filePath), &gorm.Config{})
 	DB.AutoMigrate(&Employee{})
 	var antal int64
