@@ -46,9 +46,19 @@ func addManyEmployees(c *gin.Context) {
 
 }
 
+var config Config
+
 func main() {
 	theRandom = rand.New(rand.NewSource(time.Now().UnixNano()))
-	data.InitDatabase()
+	readConfig(&config)
+
+	data.InitDatabase(config.Database.File,
+		config.Database.Server,
+		config.Database.Database,
+		config.Database.Username,
+		config.Database.Password,
+		config.Database.Port)
+
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/**")
 	router.GET("/", start)

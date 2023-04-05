@@ -1,28 +1,33 @@
 package data
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/glebarez/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
-func InitDatabase() {
-	//dsn := "root:my-secret-pw@tcp(127.0.0.1:3307)/emp?charset=utf8mb4&parseTime=True&loc=Local"
-	//DB, _ = gorm.Open(mysql.Open(dsn, &gorm.Config{}))
-	//
-	s := os.Getenv("RUNENVIRONMENT")
-	var filePath = ""
-	if s == "Production" {
-		filePath = "/database/gorm.sqlite"
-	} else {
-		filePath = "database/gorm.sqlite"
-	}
+func openMySql(server, database, username, password string, port int) *gorm.DB {
+	var url string
+	url = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		username, password, server, port, database)
 
-	//	os.MkdirAll("database", 0700)
-	DB, _ = gorm.Open(sqlite.Open(filePath), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(url), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	return db
+}
+
+func InitDatabase(file, server, database, username, password string, port int) {
+	if len(file) == 0 {
+		DB = openMySql(server, database, username, password, port)
+	} else {
+		DB, _ = gorm.Open(sqlite.Open(file), &gorm.Config{})
+	}
 	DB.AutoMigrate(&Employee{})
 	var antal int64
 	DB.Model(&Employee{}).Count(&antal) // Seed
