@@ -32,6 +32,12 @@ func employeesJson(c *gin.Context) {
 	c.JSON(http.StatusOK, employees)
 }
 
+func philipJson(c *gin.Context) {
+	var philipEmployee data.Employee
+	data.DB.Where("Namn = ?", "Philip").First(&philipEmployee)
+	c.JSON(http.StatusOK, philipEmployee)
+}
+
 func addEmployee(c *gin.Context) {
 
 	data.DB.Create(&data.Employee{Age: theRandom.Intn(50) + 18, Namn: randomdata.FirstName(randomdata.RandomGender), City: randomdata.City()})
@@ -65,6 +71,7 @@ func main() {
 	router.GET("/api/employees", employeesJson)
 	router.GET("/api/addemployee", addEmployee)
 	router.GET("/api/addmanyemployees", addManyEmployees)
+	router.GET("/api/Philip", philipJson)
 	router.Run(":8080")
 
 	// e := data.Employee{
