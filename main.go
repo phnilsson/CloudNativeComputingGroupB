@@ -61,6 +61,16 @@ func allJson(c *gin.Context) {
 	c.JSON(http.StatusOK, cities)
 }
 
+func philipJson(c *gin.Context) {
+	var philipEmployee data.Employee
+	data.DB.Where("Namn = ?", "Philip").First(&philipEmployee)
+	c.JSON(http.StatusOK, struct {
+							Name string
+							City string}{
+							Name: philipEmployee.Namn,
+							City: philipEmployee.City})
+}
+
 func addEmployee(c *gin.Context) {
 
 	data.DB.Create(&data.Employee{Age: theRandom.Intn(50) + 18, Namn: randomdata.FirstName(randomdata.RandomGender), City: randomdata.City()})
@@ -96,7 +106,7 @@ func main() {
 	router.GET("/api/addmanyemployees", addManyEmployees)
 	router.GET("/api/dorota", dorotaJson)
 	router.GET("/api/all", allJson)
-
+	router.GET("/api/Philip", philipJson)
 	router.Run(":8080")
 
 	// e := data.Employee{
