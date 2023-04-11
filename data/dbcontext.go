@@ -35,5 +35,6 @@ func InitDatabase(file, server, database, username, password string, port int) {
 		DB.Create(&Employee{Age: 50, Namn: "Stefan", City: "Test"})
 		DB.Create(&Employee{Age: 14, Namn: "Oliver", City: "Test"})
 		DB.Create(&Employee{Age: 20, Namn: "Josefine", City: "Test"})
+		DB.Create(&Employee{Age: 52, Namn: "Dorota", City: "Stokholm"})
 	}
 }
