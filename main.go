@@ -19,7 +19,7 @@ type PageView struct {
 var theRandom *rand.Rand
 
 func start(c *gin.Context) {
-	c.HTML(http.StatusOK, "home.html", &PageView{Title: "test", Rubrik: "Hej Golang"})
+	c.HTML(http.StatusOK, "home.html", &PageView{Title: "Grupp B", Rubrik: "Grupp B - nu kör vi  Golang"})
 }
 
 // HTML
@@ -30,6 +30,35 @@ func employeesJson(c *gin.Context) {
 	data.DB.Find(&employees)
 
 	c.JSON(http.StatusOK, employees)
+}
+func dorotaJson(c *gin.Context) {
+	var dorota data.Employee
+	data.DB.Where("Namn = ?", "Dorota").First(&dorota)
+
+	c.JSON(http.StatusOK, struct {
+		Name string
+		City string
+	}{
+		Name: dorota.Namn,
+		City: dorota.City})
+}
+
+func allJson(c *gin.Context) {
+	var employees []data.Employee
+	data.DB.Find(&employees)
+	// An City slice to hold data from returned employees.
+	var cities []data.CityName
+	// Loop through employees, using Scan to assign column data to struct fields.
+	for i := 0; i < len(employees); i++ {
+
+		e := data.CityName{
+			City: employees[i].City,
+			Namn: employees[i].Namn,
+		}
+		cities = append(cities, e)
+	}
+
+	c.JSON(http.StatusOK, cities)
 }
 
 func addEmployee(c *gin.Context) {
@@ -65,6 +94,9 @@ func main() {
 	router.GET("/api/employees", employeesJson)
 	router.GET("/api/addemployee", addEmployee)
 	router.GET("/api/addmanyemployees", addManyEmployees)
+	router.GET("/api/dorota", dorotaJson)
+	router.GET("/api/all", allJson)
+
 	router.Run(":8080")
 
 	// e := data.Employee{
