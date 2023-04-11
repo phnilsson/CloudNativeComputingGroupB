@@ -32,6 +32,18 @@ func employeesJson(c *gin.Context) {
 	c.JSON(http.StatusOK, employees)
 }
 func dorotaJson(c *gin.Context) {
+	var dorota data.Employee
+	data.DB.Where("Namn = ?", "Dorota").First(&dorota)
+
+	c.JSON(http.StatusOK, struct {
+		Name string
+		City string
+	}{
+		Name: dorota.Namn,
+		City: dorota.City})
+}
+
+func allJson(c *gin.Context) {
 	var employees []data.Employee
 	data.DB.Find(&employees)
 	// An City slice to hold data from returned employees.
@@ -83,6 +95,7 @@ func main() {
 	router.GET("/api/addemployee", addEmployee)
 	router.GET("/api/addmanyemployees", addManyEmployees)
 	router.GET("/api/dorota", dorotaJson)
+	router.GET("/api/all", allJson)
 
 	router.Run(":8080")
 
