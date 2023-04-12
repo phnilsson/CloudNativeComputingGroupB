@@ -30,6 +30,7 @@ type Team struct {
 type Player struct {
 	Id           int
 	Name         string
+	BirthYear    int
 	TeamId       int
 	JerseyNumber int
 }
