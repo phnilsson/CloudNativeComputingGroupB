@@ -31,6 +31,19 @@ func employeesJson(c *gin.Context) {
 
 	c.JSON(http.StatusOK, employees)
 }
+
+func christianJson(c *gin.Context) {
+	var christian data.Employee
+	data.DB.Where("Namn = ?", "Christian").First(&christian)
+
+	c.JSON(http.StatusOK, struct {
+		Name string
+		City string
+	}{
+		Name: christian.Namn,
+		City: christian.City})
+}
+
 func dorotaJson(c *gin.Context) {
 	var dorota data.Employee
 	data.DB.Where("Namn = ?", "Dorota").First(&dorota)
@@ -65,10 +78,11 @@ func philipJson(c *gin.Context) {
 	var philipEmployee data.Employee
 	data.DB.Where("Namn = ?", "Philip").First(&philipEmployee)
 	c.JSON(http.StatusOK, struct {
-							Name string
-							City string}{
-							Name: philipEmployee.Namn,
-							City: philipEmployee.City})
+		Name string
+		City string
+	}{
+		Name: philipEmployee.Namn,
+		City: philipEmployee.City})
 }
 
 func addEmployee(c *gin.Context) {
@@ -105,6 +119,7 @@ func main() {
 	router.GET("/api/addemployee", addEmployee)
 	router.GET("/api/addmanyemployees", addManyEmployees)
 	router.GET("/api/dorota", dorotaJson)
+	router.GET("/api/christian", christianJson)
 	router.GET("/api/all", allJson)
 	router.GET("/api/Philip", philipJson)
 	router.Run(":8080")
