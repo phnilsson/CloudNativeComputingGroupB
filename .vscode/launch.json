@@ -11,9 +11,8 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            "console": "externalTerminal",
-            "env": " ",
+            "console": "externalTerminal"
+            //"env": {"RUNENVIRONMENT":"Production"}
         }
     ]
-    //"env": {"RUNENVIRONMENT":"Production"}
 }
