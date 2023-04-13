@@ -39,4 +39,14 @@ func InitDatabase(file, server, database, username, password string, port int) {
 		DB.Create(&Employee{Age: 32, Namn: "Philip", City: "Linköping"})
 		DB.Create(&Employee{Age: 44, Namn: "Christian", City: "Flyinge"})
 	}
+	DB.AutoMigrate(&Team{})
+	var teamAntal int64
+	DB.Model(&Team{}).Count(&teamAntal) // Seed
+	if teamAntal == 0 {
+		DB.Create(&Team{FoundedYear: 1900, Name: "Bayern München", City: "München"})
+		DB.Create(&Team{FoundedYear: 1880, Name: "Manchester City", City: "Manchester"})
+		DB.Create(&Team{FoundedYear: 1980, Name: "Napoli", City: "Napoli"})
+		DB.Create(&Team{FoundedYear: 1899, Name: "Barcelona", City: "Barcelona "})
+
+	}
 }
