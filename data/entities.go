@@ -38,3 +38,7 @@ type CityName struct {
 	City string
 	Namn string
 }
+
+type Name struct {
+	Name string
+}

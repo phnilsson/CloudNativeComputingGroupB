@@ -85,6 +85,22 @@ func philipJson(c *gin.Context) {
 		City: philipEmployee.City})
 }
 
+func teamsJson(c *gin.Context) {
+	var teams []data.Team
+	data.DB.Find(&teams)
+	var names []data.Name
+	// Loop through employees, using Scan to assign column data to struct fields.
+	for i := 0; i < len(teams); i++ {
+
+		e := data.Name{
+			Name: teams[i].Name,
+		}
+		names = append(names, e)
+	}
+
+	c.JSON(http.StatusOK, names)
+}
+
 func addEmployee(c *gin.Context) {
 
 	data.DB.Create(&data.Employee{Age: theRandom.Intn(50) + 18, Namn: randomdata.FirstName(randomdata.RandomGender), City: randomdata.City()})
@@ -122,6 +138,7 @@ func main() {
 	router.GET("/api/christian", christianJson)
 	router.GET("/api/all", allJson)
 	router.GET("/api/Philip", philipJson)
+	router.GET("/api/team", teamsJson)
 	router.Run(":8080")
 
 	// e := data.Employee{
