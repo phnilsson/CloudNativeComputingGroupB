@@ -99,6 +99,35 @@ func addManyEmployees(c *gin.Context) {
 
 }
 
+func getTeamName(teamID int) string {
+	// Call a function to look up the team name in the database
+	return "TestTeam"
+}
+
+func getPlayerInformation(c *gin.Context) {
+	// Get the player ID from the URL path
+	playerID := c.Param("playerid")
+
+	var player data.Player
+	result := data.DB.Find(&player, playerID)
+
+	if result.Error != nil {
+		c.AbortWithError(http.StatusInternalServerError, result.Error)
+		return
+	}
+
+	c.JSON(http.StatusOK, struct {
+		Name         string
+		BirthYear    int
+		Team         string
+		JerseyNumber int
+	}{
+		Name:         player.Name,
+		BirthYear:    player.BirthYear,
+		JerseyNumber: player.JerseyNumber,
+		Team:         getTeamName(player.TeamId)})
+}
+
 var config Config
 
 func main() {
@@ -122,6 +151,8 @@ func main() {
 	router.GET("/api/christian", christianJson)
 	router.GET("/api/all", allJson)
 	router.GET("/api/Philip", philipJson)
+	//router.GET("/api/team/:teamid", getTeamInformation)
+	router.GET("/api/player/:playerid", getPlayerInformation)
 	router.Run(":8080")
 
 	// e := data.Employee{
