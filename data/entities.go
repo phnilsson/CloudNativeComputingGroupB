@@ -25,3 +25,11 @@ type CityName struct {
 	City string
 	Namn string
 }
+
+type Player struct {
+	Id           int
+	Name         string
+	BirthYear    int
+	TeamId       int
+	JerseyNumber int
+}
