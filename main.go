@@ -100,8 +100,9 @@ func addManyEmployees(c *gin.Context) {
 }
 
 func getTeamName(teamID int) string {
-	// Call a function to look up the team name in the database
-	return "TestTeam"
+	var team data.Team
+	data.DB.Find(&team, teamID)
+	return team.Name
 }
 
 func getPlayerInformation(c *gin.Context) {
@@ -109,12 +110,7 @@ func getPlayerInformation(c *gin.Context) {
 	playerID := c.Param("playerid")
 
 	var player data.Player
-	result := data.DB.Find(&player, playerID)
-
-	if result.Error != nil {
-		c.AbortWithError(http.StatusInternalServerError, result.Error)
-		return
-	}
+	data.DB.Find(&player, playerID)
 
 	c.JSON(http.StatusOK, struct {
 		Name         string
