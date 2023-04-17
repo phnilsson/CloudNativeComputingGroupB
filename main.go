@@ -136,8 +136,8 @@ func main() {
 	router.GET("/api/addmanyemployees", addManyEmployees)
 	router.GET("/api/dorota", dorotaJson)
 	router.GET("/api/christian", christianJson)
+	router.GET("/api/philip", philipJson)
 	router.GET("/api/all", allJson)
-	router.GET("/api/Philip", philipJson)
 	router.GET("/api/team", teamsJson)
 	router.Run(":8080")
 
