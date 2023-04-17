@@ -140,6 +140,35 @@ func getPlayerInformation(c *gin.Context) {
 		Team:         getTeamName(player.TeamId)})
 }
 
+func getTeamsPlayers(teamID int) []data.Player {
+	var players []data.Player
+	data.DB.Where("team_id = ?", teamID).Find(&players)
+
+	return players
+
+}
+
+func getTeamInformation(c *gin.Context) {
+	// Get the team ID from the URL path
+	teamID := c.Param("teamid")
+
+	var team data.Team
+	data.DB.Find(&team, teamID)
+
+	c.JSON(http.StatusOK, struct {
+		FoundedYear int
+		City        string
+		Name        string
+		Players     []data.Player
+		TeamID      int
+	}{
+		TeamID:      team.Id,
+		Name:        team.Name,
+		City:        team.City,
+		FoundedYear: team.FoundedYear,
+		Players:     getTeamsPlayers(team.Id)})
+}
+
 var config Config
 
 func main() {
@@ -164,7 +193,7 @@ func main() {
 	router.GET("/api/philip", philipJson)
 	router.GET("/api/all", allJson)
 	router.GET("/api/team", teamsJson)
-	//router.GET("/api/team/:teamid", getTeamInformation)
+	router.GET("/api/team/:teamid", getTeamInformation)
 	router.GET("/api/player/:playerid", getPlayerInformation)
 	router.Run(":8080")
 
